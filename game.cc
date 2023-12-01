@@ -9,6 +9,9 @@ void Game::start() {
 
 void Game::choose_level() {
     Operations operation;
+    player_.set_x_coord(0);
+    player_.set_y_coord(0);
+    player_.set_score(0);
 
     while (true) {
         std::cout << "Choose the level that you want to play. Press '1' or '2':" << std::endl;
@@ -78,10 +81,6 @@ void Game::play() {
 }
 
 void Game::end() {
-    player_.set_x_coord(0);
-    player_.set_y_coord(0);
-    player_.set_score(0);
-
     Operations operation;
     std::cout << "Do you want to play again? Press 'y' or 'n': " << std::endl;
 

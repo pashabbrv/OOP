@@ -8,8 +8,8 @@
 
 class Levels{
  public:
-    Field first_level();
-    Field second_level();
+    Field& first_level();
+    Field& second_level();
  private:
     Damage* damage = new Damage;
     Score* score = new Score;

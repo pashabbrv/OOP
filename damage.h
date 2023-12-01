@@ -8,6 +8,7 @@
 class Damage: public Event{
  public:
     void realization(Controller& controller) override;
+    Event* create() const override;
 };
 
 #endif
