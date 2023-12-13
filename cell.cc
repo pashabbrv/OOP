@@ -6,8 +6,8 @@ void Cell::set_access(bool access) { access_ = access; }
 
 bool Cell::get_access() const { return access_; }
 
-bool Cell::get_event() const{
-    return event_ != nullptr;
+Event* Cell::get_event() const{
+    return event_;
 }
 
 void Cell::set_event(Event* event){

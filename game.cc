@@ -1,20 +1,22 @@
 #include "game.h"
 
 void Game::start() {
-    std::cout << "Welcome!" << std::endl;
-    choose_level();
-    play();
-    end();
+    Tracker tracker(render_, player_, field_);
+    tracker.check_state(States::kStart);
+    
+    choose_level(tracker);
+    play(tracker);
+    end(tracker);
 }
 
-void Game::choose_level() {
+void Game::choose_level(Tracker& tracker) {
     Operations operation;
     player_.set_x_coord(0);
     player_.set_y_coord(0);
     player_.set_score(0);
 
     while (true) {
-        std::cout << "Choose the level that you want to play. Press '1' or '2':" << std::endl;
+        tracker.check_state(States::kLevel);
         operation = handler_.get_operation();
 
         if (operation == Operations::Level1) {
@@ -26,35 +28,32 @@ void Game::choose_level() {
             player_.set_health(40);
             break;  
         } else {
-            std::cout << "There is no such level! Try again." << std::endl;
+            tracker.check_state(States::kWarning);
             continue;
         }
         system("cls");
     }
 }
 
-void Game::play() {
+void Game::play(Tracker& tracker) {
     Controller controller(player_, field_);
     Operations operation;
     Ways way;
 
     while (true) {
         system("cls");
-        player_.print_settings();
-        field_.print_field(player_);
+        tracker.check_state(States::kPlay);
 
         if (player_.get_health() <= 0) {
-            std::cout << "You loose! GAME OVER" << std::endl;
+            tracker.check_state(States::kLose);
             break;
         }
 
         if (player_.get_x_coord() == field_.get_exit_x() && player_.get_y_coord() == field_.get_exit_y()) {
-            std::cout << "You win!" << std::endl;
+            tracker.check_state(States::kWin);
             break;
         }
 
-        std::cout << "Choose what you want to do: 'w' - go up, 'a' - go left, 's' - go down, 'd' - go right. " << std::endl;
-        std::cout << "If you want to quit the game press 'q'." << std::endl;
         operation = handler_.get_operation();
 
         if (operation == Operations::Quit)
@@ -80,9 +79,9 @@ void Game::play() {
     }
 }
 
-void Game::end() {
+void Game::end(Tracker& tracker) {
     Operations operation;
-    std::cout << "Do you want to play again? Press 'y' or 'n': " << std::endl;
+    tracker.check_state(States::kNewGame);
 
     while (true) {
         operation = handler_.get_operation();
@@ -91,11 +90,11 @@ void Game::end() {
             system("cls");    
             start();
         } else if (operation == Operations::No) {
-            std::cout << "Goodbye :)" << std::endl;
+            tracker.check_state(States::kEnd);
             exit(0);
         } else
             continue;
     }
 }
 
-Game::Game(Handler& handler) : handler_(handler) {}
+Game::Game(Handler& handler, Render& render) : handler_(handler), render_(render) {}

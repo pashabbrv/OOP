@@ -4,21 +4,24 @@
 #include "levels.h"
 #include "handler.h"
 #include "controller.h"
+#include "tracker.h"
+#include "render.h"
 
 class Game {
  public:
    void start();
-   Game(Handler& handler);
+   Game(Handler& handler, Render& render);
 
  private:   
    Handler& handler_;
    Levels levels_;
    Field field_;
    Player player_;
+   Render& render_;
 
-   void choose_level();
-   void play();
-   void end();
+   void choose_level(Tracker& tracker);
+   void play(Tracker& tracker);
+   void end(Tracker& tracker);
 };
 
 #endif

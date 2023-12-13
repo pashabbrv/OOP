@@ -7,7 +7,7 @@ class Cell {
  public:
     void set_access(bool access);
     bool get_access() const;
-    bool get_event() const;
+    Event* get_event() const;
     void set_event(Event* event);
     void start_event(Controller& controller);
     Cell(const Cell& other) noexcept;
